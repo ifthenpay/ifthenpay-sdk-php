@@ -1,0 +1,22 @@
+{
+    "preset": "psr12",
+    "exclude": [
+        "vendor",
+        "_dev",
+        ".ddev",
+        "tests"
+    ],
+    "rules": {
+        "array_syntax": {
+            "syntax": "short"
+        },
+        "binary_operator_spaces": {
+            "operators": {
+                "=>": "align_single_space_minimal",
+                "=": "align_single_space_minimal"
+            }
+
+        },
+		"indentation_type": true
+    }
+}

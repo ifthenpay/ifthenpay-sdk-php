@@ -1,0 +1,15 @@
+/_dev/               export-ignore
+/.ddev/              export-ignore
+/.git/               export-ignore
+/.scannerwork/       export-ignore
+/.vscode/            export-ignore
+/examples/           export-ignore
+/tests/              export-ignore
+/vendor/             export-ignore
+/.gitattributes      export-ignore
+/.gitignore          export-ignore
+/config.php          export-ignore
+/config.php.example  export-ignore
+/phpstan.neon        export-ignore
+/phpunit.xml         export-ignore
+/pint.json           export-ignore
