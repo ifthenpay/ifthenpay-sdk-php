@@ -15,8 +15,6 @@ A small SDK that aims to facilitate integration with the ifthenpay Gateway API u
 * Register Webhook
 * Validate Webhook
 
-This is a highly opiniated way of working with ifthenpay payment API, if you need something
-
 ---
 
 * [⚙️ Installation](#%EF%B8%8F-installation)
@@ -131,11 +129,11 @@ return [
 ];
 ```
 
-**Important Note:** bear in mind that if you try to call a method that relies on a given config, but is not set, it will throw a /ConfigException with a message that will help you realise a config property is missing.
+**Important Note:** bear in mind that if you try to call a method that relies on a given config, but is not set, it will throw a /ConfigException with a message that will help you realize a config property is missing.
 
 ### Using you own HTTP client
 
-This package ships with it's own http client (compatible with PSR-18), if you wish to replace it with your own you can inject it when instantiating the IfthenpayGateway class, as long as it is compatible with PSR-18. Find a list of PSR-18 HTTP clients here [LINK](https://packagist.org/providers/psr/http-client-implementation)
+This package ships with its own HTTP client (compatible with PSR-18), if you wish to replace it with your own, you can inject it when instantiating the IfthenpayGateway class, as long as it is compatible with PSR-18. Find compatible HTTP clients at [packagist](https://packagist.org/providers/psr/http-client-implementation)
 
 ```php
 $ifthenpayGateway = new IfthenpayGateway($config, $guzzle);
@@ -145,8 +143,8 @@ $ifthenpayGateway = new IfthenpayGateway($config, $guzzle);
 
 ## 📖 Available Methods
 
-To use any of the methods shown next you must first instantiate the main class, after which you will have access to each payment method service objects.
-There is a payment method service for each of the payment methods ifthenpay provides, like Multibanco Dynamic, MB WAY, etc.
+To use any of the methods shown next, you must first instantiate the main class, after which you will have access to each payment method service object.
+There is a payment method service for each of the payment methods that ifthenpay provides, like Multibanco Dynamic, MB WAY, etc.
 Each service can be slightly different from its siblings, check the methods docs or refer to the examples for more information.
 
 **Note:** access to a payment method object that does not have the required configuration will return an exception.
@@ -177,18 +175,18 @@ $ifthenpayGateway->mbway()->initPayment('0103', '10,99', '919999999');
 
 ### Payment Services methods
 
-With a payment service object you gain access to its methods, some of which are common to other payment service object.
+With a payment service object, you gain access to its methods, some of which are common to other payment service objects.
 
-* `initPayment()` initiates a payment for the current service and returns a payment model object, which contains all the details necessary to persist that payment in you application/project.
-* `registerWebhook()` register a URL as webhook, this must be a valid URL in your project that will handle the payment satus update.
+* `initPayment()` initiates a payment for the current service and returns a payment model object, which contains all the details necessary to persist that payment in your application/project.
+* `registerWebhook()` register a URL as a webhook, this must be a valid URL in your project that will handle the payment status update.
 * `validateWebhook()` validates the default parameters of the webhook request, this is a simple parameter validation against your persisted payment model. You can use this method in the controller that receives the webhook to quickly validate the request.
-* `isExpired()` checks if the payment has expired, if no expire time configured returns false.
+* `isExpired()` checks if the payment has expired, if no expiration time is configured returns false.
 * `isPaid()` checks if a payment is complete, that is, if it has been paid by the customer.  
 *`getPaymentStatus()`*(MB WAY and Cofidis only)* gets the current status of the transaction.
   * MB WAY, when initialized with success, is in a "pending" status, it can then be "paid", "rejected_by_user", "declined" or "expired".
   * Cofidis, when initialized with success, is in a "pending" status, it can then be "paid", "declined", "canceled" or "error
-*`verifyPayment()`*(Credit Card only)*verifies the secret key in the success redirect from credit card page, allowing you to verify the payment in that way.
-*`isTransactionPaid()`*(Pay By Link only)* used to verify the payment, it validates the secret key sent in the Pay By Link success redirect. This method has a very specific use, it requires a the transaction ID which is only given when Pay By Link redirects to the success URL. Pay By Link only redirect to success URL when confirming payment in gateway page or being redirected from Pay By Link Credit Card or Pix.
+*`verifyPayment()`*(Credit Card only)*verifies the secret key in the success redirect from the credit card page, allowing you to verify the payment in that way.
+*`isTransactionPaid()`*(Pay By Link only)* used to verify the payment, it validates the secret key sent in the Pay By Link success redirect. This method has a very specific use, it requires the transaction ID which is only given when Pay By Link redirects to the success URL. Pay By Link only redirects to the success URL when confirming payment on the gateway page or being redirected from Pay By Link Credit Card or Pix.
 
 #### Multibanco Dynamic
 
@@ -291,7 +289,7 @@ public function isExpired(PayByLink $payment): bool;
 
 ### Payment object
 
-A payment object is what is returned to you, when generating a payment, and other methods like `validateWebhook` and `isExpire` expect it as a parameter.
+A payment object is what is returned to you when generating a payment, and other methods like `validateWebhook` and `isExpire` expect it as a parameter.
 
 ```php
 /** @var \Ifthenpay\PaymentGateway\Payments\Mbway\MbwayPayment $payment */
@@ -314,24 +312,24 @@ All the payment objects implement the same methods:
     public function getUpdatedAt(): ?DateTimeImmutable;
 ```
 
-* `toArray()` returns an array version of the current object, it also converts the dates to string and the Status enum to string, this can be used if you prefer to deal with arrays and primitives.
+* `toArray()` returns an array version of the current object, it also converts the dates to strings and the Status enum to strings. This can be used if you prefer to deal with arrays and primitives.
 * `getOrderId()` returns the order ID.
 * `getAmount()` returns the amount.
 * `getTransactionId()` returns the transaction ID, it will return null for Multibanco Offline and Pay By Link, since these do not use that property like other payment methods.
-* `getReference()` returns the reference, it will return null for **all** payments except Multibanco Dynamic, Multibanco Offline and Payshop, since only these use that property.
+* `getReference()` returns the reference, it will return null for **all** payments except Multibanco Dynamic, Multibanco Offline, and Payshop, since only these use that property.
 * `getStatus()` returns an enum of the status of the payment /ifthenpay-sdk/src/Enums/Status.php.
-* `getExpireDate()` returns the generated date of expiration or null, note that this date is only meant facilitate state changing of the payment inside your logic and it does not direcly reflect the inherent expiration of a payment.
-* `getCreatedAt()` returns the date of the creation of the payment, attention this uses Europe/Lisbon timezone.
-* `getUpdatedAt()` returns the date of the update of the payment, this property exists for when you wish to add logic that updates the payment status and wish to add a update timestamp.
+* `getExpireDate()` returns the generated date of expiration or null. Note that this date is only meant to facilitate state changing of the payment inside your logic, and it does not directly reflect the inherent expiration of a payment.
+* `getCreatedAt()` returns the date of the creation of the payment, note that this uses the Europe/Lisbon timezone.
+* `getUpdatedAt()` returns the date of the update of the payment, this property exists for when you wish to add logic that updates the payment status and wish to add an update timestamp.
 
 ## 💻 Examples
 
-These are some common use cases show in simplified maner, more can be found at the examples folder of this project.
+These are some common use cases shown in a simplified manner, more can be found in the examples folder of this project.
 
 ### Create a payment
 
 Use the `initPayment()` method to create a payment using the current payment service.
-It will return a payment object which you can then use to store in your database or execute some logic.
+It will return a payment object, which you can then use to store in your database or execute some logic.
 Each payment service provides this method, with some expecting different parameters and return objects.
 
 ```php
@@ -343,7 +341,7 @@ $payment = $ifthenpayGateway->mbway()->initPayment('100021', '15.00', '919999999
 ### Register webhook
 
 Ifthenpay has a webhook system that, once registered, whenever a payment is completed, will send a GET request to the URL you have registered. You can use this to update a payment status on your implementation.
-You may set addition webhook parameters by passing an assoc array in the second parameter, but keep in mind the webhook has a limit of 300 characters.
+You may set additional webhook parameters by passing an assoc array in the second parameter, but keep in mind the webhook has a limit of 300 characters.
 
 ```php
 
@@ -379,7 +377,8 @@ catch {
 ### Check payment expiration
 
 If you configured an expiration time in the configuration, you can use this method to verify if a payment has expired.
-Bear in mind that this expiration check serves only to help you update the payment status, for example set it to Cancelled if not paid in time. It is a simple function that compares the expire date, generated during payment creation, against the current time.
+It is a simple function that compares the expiration date, generated during payment creation, against the current time.
+Bear in mind that this expiration check serves only to help you update the payment status, for example, set it to Cancelled if not paid in time.
 
 ```php
 // assuming getting a payment record stored in your database ($dataArray) maps it to a payment object
@@ -391,8 +390,8 @@ $result = $ifthenpayGateway->mbway()->isExpired($payment);
 ### Check if payment is complete/paid
 
 Allows you to check if the payment is complete.
-With the exception of Pay By Link (which has it's own method `isTransactionPaid()` ), each payment method service provides this method.
-**Important Note:** this method is intended to be used to check the status at a given point in your payment logic. Because this method's endpoint is subject to rate limiting, it should **not** be used in low interval cronjobs, in most scenarios webhook will do what you need.
+Except for Pay By Link (which has its own method `isTransactionPaid()` ), each payment method service provides this method.
+**Important Note:** this method is intended to be used to check the status at a given point in your payment logic. Because this method's endpoint is subject to rate limiting, it should **not** be used in low-interval cron jobs; in most scenarios, the webhook will do what you need.
 
 ```php
 
@@ -404,11 +403,11 @@ $result = $ifthenpayGateway->mbway()->isPaid($storedPayment);
 
 ### Check payment status (MB WAY and Cofidis)
 
-This method is exclusive to MB WAY and Cofids, and is used to get a status enum of the transaction, since these payments can have different status at a given time.
+This method is exclusive to MB WAY and Cofidis and is used to get a status enum of the transaction, since these payments can have different statuses at a given time.
 MB WAY, when initialized with success, is in a "pending" status, it can then be "paid", "rejected_by_user", "declined" or "expired".
 Cofidis, when initialized with success, is in a "pending" status, it can then be "paid", "declined", "canceled" or "error. D
-A common use case in MB WAY, is using this method together with a frontend countdown timer to display the transaction status to the buyer.
-Cofidis's method lets you set the number of attempts, this was necessary since a few seconds delay may occour while the status is updated.
+A common use case in MB WAY is using this method together with a frontend countdown timer to display the transaction status to the buyer.
+Cofidis's method lets you set the number of attempts, this was necessary since a few seconds delay may occur while the status is updated.
 
 ```php
 // assuming getting a payment record stored in your database ($dataArray)
@@ -421,9 +420,9 @@ $mbwayPaymentStatus = $ifthenpayGateway->mbway()->getPaymentStatus($transactionI
 ### Check if payment is complete/paid (Pay By Link)
 
 Check if Pay By Link payment is complete.
-**Important Note:** when using Pay By Link, the transaction ID is not readly available, only when the webhook is executed that the transaction ID is known, normaly by the form of a return on success.
+**Important Note:** when using Pay By Link, the transaction ID is not readily available; only when the webhook is executed is the transaction ID known, normally in the form of a return on success.
 This method is used to verify the success URL redirect.
-If the payment is paid it will return the enum of the payment method used, else if not paid will return false.  
+If the payment is paid, it will return the enum of the payment method used, else, if not paid, it will return false.
 
 ```php
 
@@ -439,7 +438,7 @@ if($paymentMethod) {
 ### Verify Credit Card Payment is complete (Credit Card)
 
 This method is an alternative to isPaid().
-While isPaid() comunicates with ifthenpay server to know if the payment is complete, this verifies the secret key returned in success redirect.
+While isPaid() communicates with the ifthenpay server to know if the payment is complete, this verifies the secret key returned in the success redirect.
 
 ```php
 // assumes you are redirected from the credit card gateway page
@@ -454,7 +453,7 @@ if($isPaid) {
 ### Creating a factory
 
 If you are using the SDK multiple times across your project, you may want to create a factory to handle the config for you instead of configuring it everytime.
-Refer to /examples/configuration/factoryWithConfig.php
+Refer to /examples/configuration/factoryWithConfig.php.
 
 ```php
 // examples/configuration/factoryWithConfig.php
@@ -488,7 +487,7 @@ $payment = $ifthenpayGateway->mbway()->initPayment('0103', '10,99', '919999999')
 
 ### Creating a factory with external config
 
-Take it a step further and separate the config to it's own file by creating a closure. This is usefull if you want to keep all your project configurations in one folder.
+Take it a step further and separate the config to its own file by creating a closure. This is useful if you want to keep all your project configurations in one folder.
 
 ```php
 // examples/configuration/configClosure.php
@@ -528,22 +527,22 @@ class SdkFactory
 **R:** Yes, the methods in this SDK won't work without the correct account keys.
 
 **Q:** How can I test this SDK?
-**R:** This SDK does not have a sandbox functionality, you can ask for test account from [ifthenpay support](https://helpdesk.ifthenpay.com/)
+**R:** This SDK does not have a sandbox functionality, you can ask for a test account from [ifthenpay support](https://helpdesk.ifthenpay.com/)
 
 **Q:** How do I use this SDK in my integration?
 **R:** Use the examples provided in this repository as reference, the most common use cases are shown there.
 
 **Q:** Can I change the code of this package?
-**R:** Sure, if you need, you are free to customize it as you see fit.
+**R:** Sure, if you need to, you are free to customize it as you see fit.
 
 **Q:** Can I use this SDK on versions of PHP older than 8.1?
 **R:** No, unless you refactor it in order to comply with older versions of PHP.
 
 **Q:** If I set the daysToExpire/minutesToExpire and a payment goes without completion, can the customer still pay it?
-**R:** Only Multibanco Dynamic, Payshop and Pay By Link use the expiration time in the endpoint request and will not be payable after it, meaning if you try to access the link or try to pay you will encounter an error. The secondary purpose of daysToExpire/minutesToExpire is to help you know when to change the satus of your order, in most cases set it to canceled after the time passed.
+**R:** Only Multibanco Dynamic, Payshop, and Pay By Link use the expiration time in the endpoint request and will not be payable after it, meaning if you try to access the link or try to pay, you will encounter an error. The secondary purpose of daysToExpire/minutesToExpire is to help you know when to change the status of your order, in most cases, set it to canceled after the time has passed.
 
 **Q:** How can i set the payments to never expire?
-**R:** You can pass `null` in the daysToExpire/minutesToExpire parameter, **but** beware, some methods have inherent expiration which can not be changed and will not be payable after that expiration has passed, look up the table to know which ones.
+**R:** You can pass `null` in the daysToExpire/minutesToExpire parameter, **but** beware, some methods have inherent expiration that cannot be changed and will not be payable after that expiration has passed, look up the table to know which ones.
 
 | Payment method     | Inherent expiration                       | Expiration parameter prevents access to payment |
 |--------------------|-------------------------------------------|-------------------------------------------------|
@@ -556,4 +555,4 @@ class SdkFactory
 | Cofidis            | 60 minutes                                | no                                              |
 | Pix                | 5 minutes                                 | no                                              |
 
-Note: an expiration of 0 days means it expires in the same day at 23:59.
+Note: an expiration of 0 days means it expires on the same day at 23:59.
