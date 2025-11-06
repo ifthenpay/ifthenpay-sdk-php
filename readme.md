@@ -523,26 +523,26 @@ class SdkFactory
 
 ## ❔ FAQ
 
-**Q:** Do I need an ifthenpay account to use this SDK?
-**R:** Yes, the methods in this SDK won't work without the correct account keys.
+**Q:** Do I need an ifthenpay account to use this SDK?  
+**A:** Yes, the methods in this SDK won't work without the correct account keys.
 
-**Q:** How can I test this SDK?
-**R:** This SDK does not have a sandbox functionality, you can ask for a test account from [ifthenpay support](https://helpdesk.ifthenpay.com/)
+**Q:** How can I test this SDK?  
+**A:** This SDK does not have a sandbox functionality, you can ask for a test account from [ifthenpay support](https://helpdesk.ifthenpay.com/)
 
-**Q:** How do I use this SDK in my integration?
-**R:** Use the examples provided in this repository as reference, the most common use cases are shown there.
+**Q:** How do I use this SDK in my integration?  
+**A:** Use the examples provided in this repository as reference, the most common use cases are shown there.
 
-**Q:** Can I change the code of this package?
-**R:** Sure, if you need to, you are free to customize it as you see fit.
+**Q:** Can I change the code of this package?  
+**A:** Sure, if you need to, you are free to customize it as you see fit.
 
-**Q:** Can I use this SDK on versions of PHP older than 8.1?
-**R:** No, unless you refactor it in order to comply with older versions of PHP.
+**Q:** Can I use this SDK on versions of PHP older than 8.1?  
+**A:** No, unless you refactor it in order to comply with older versions of PHP.
 
-**Q:** If I set the daysToExpire/minutesToExpire and a payment goes without completion, can the customer still pay it?
-**R:** Only Multibanco Dynamic, Payshop, and Pay By Link use the expiration time in the endpoint request and will not be payable after it, meaning if you try to access the link or try to pay, you will encounter an error. The secondary purpose of daysToExpire/minutesToExpire is to help you know when to change the status of your order, in most cases, set it to canceled after the time has passed.
+**Q:** If I set the daysToExpire/minutesToExpire and a payment goes without completion, can the customer still pay it?  
+**A:** Only Multibanco Dynamic, Payshop, and Pay By Link use the expiration time in the endpoint request and will not be payable after it, meaning if you try to access the link or try to pay, you will encounter an error. The secondary purpose of daysToExpire/minutesToExpire is to help you know when to change the status of your order, in most cases, set it to canceled after the time has passed.
 
-**Q:** How can i set the payments to never expire?
-**R:** You can pass `null` in the daysToExpire/minutesToExpire parameter, **but** beware, some methods have inherent expiration that cannot be changed and will not be payable after that expiration has passed, look up the table to know which ones.
+**Q:** How can i set the payments to never expire?  
+**A:** You can pass `null` in the daysToExpire/minutesToExpire parameter, **but** beware, some methods have inherent expiration that cannot be changed and will not be payable after that expiration has passed, look up the table to know which ones.
 
 | Payment method     | Inherent expiration                       | Expiration parameter prevents access to payment |
 |--------------------|-------------------------------------------|-------------------------------------------------|
