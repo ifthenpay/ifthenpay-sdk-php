@@ -50,7 +50,7 @@ return [
             'APPLE'   => 'ITP-000000',
             'PIX'     => 'ITP-000000',
         ],
-        'defaultMethod'    => 'CCARD', // MBWAY, MULTIBANCO_DYNAMIC, MULTIBANCO_STATIC, PAYSHOP, CREDIT_CARD, COFIDIS, GOOGLE, APPLE, PIX
+        'defaultMethod'    => 'CCARD', // MBWAY, MULTIBANCO_DYNAMIC, MULTIBANCO_OFFLINE, PAYSHOP, CREDIT_CARD, COFIDIS, GOOGLE, APPLE, PIX
         'daysToExpire'     => 3,
         'isOneTimePayment' => true,
         'successUrl'       => 'https://youraddress.com/sucess.php',

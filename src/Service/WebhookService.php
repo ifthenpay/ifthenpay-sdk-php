@@ -14,8 +14,7 @@ class WebhookService
     public function __construct(
         private Config $config,
         private ApiService $apiService,
-    ) {
-    }
+    ) {}
 
 
 
@@ -31,7 +30,7 @@ class WebhookService
      * - 'pm' : Payment method code value.
      *
      * Additional parameters are included depending on the method code:
-     * - For PAYSHOP, MULTIBANCO_DYNAMIC, MULTIBANCO_STATIC: adds 'ref' (reference placeholder).
+     * - For PAYSHOP, MULTIBANCO_DYNAMIC, MULTIBANCO_OFFLINE: adds 'ref' (reference placeholder).
      * - For PAY_BY_LINK: adds 'gpm' (payment method placeholder).
      *
      * @param MethodCode $code The payment method code.
@@ -57,7 +56,7 @@ class WebhookService
 
             case MethodCode::PAYSHOP:
             case MethodCode::MULTIBANCO_DYNAMIC:
-            case MethodCode::MULTIBANCO_STATIC:
+            case MethodCode::MULTIBANCO_OFFLINE:
                 $params['ref'] = '[REFERENCE]';
 
                 return $params;

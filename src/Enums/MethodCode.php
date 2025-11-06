@@ -6,7 +6,7 @@ enum MethodCode: string
 {
     case MBWAY              = 'MBWAY';
     case MULTIBANCO_DYNAMIC = 'MB';
-    case MULTIBANCO_STATIC  = 'MULTIBANCO'; // Set for clarity, the entity number is internally used to identify the method
+    case MULTIBANCO_OFFLINE  = 'MULTIBANCO'; // Set for clarity, the entity number is internally used to identify the method
     case PAYSHOP            = 'PAYSHOP';
     case CREDIT_CARD        = 'CCARD';
     case PIX                = 'PIX';

@@ -328,7 +328,7 @@ describe('[FEATURE] paybylink isTransactionPaid', function () {
         $ifthenpayGateway = new IfthenpayGateway($this->configArray, $mockClient);
 
         $result = $ifthenpayGateway->paybylink()->isTransactionPaid($webhookRequest->transactionId);
-        expect($result)->toBe(MethodCode::MULTIBANCO_STATIC);
+        expect($result)->toBe(MethodCode::MULTIBANCO_OFFLINE);
     });
 
     it('returns payment status as false', function () {

@@ -25,7 +25,7 @@ class PayByLinkService implements PayByLinkServiceInterface
 
     private const METHOD_INDEX = [
         MethodCode::MULTIBANCO_DYNAMIC->value => '1',
-        MethodCode::MULTIBANCO_STATIC->value  => '1',
+        MethodCode::MULTIBANCO_OFFLINE->value  => '1',
         MethodCode::MBWAY->value              => '2',
         MethodCode::PAYSHOP->value            => '3',
         MethodCode::CREDIT_CARD->value        => '4',
@@ -81,7 +81,7 @@ class PayByLinkService implements PayByLinkServiceInterface
 
         $methodArr         = $this->config->payByLinkMethodAccounts();
         $methodAccountsStr = implode(';', array_map(
-            fn ($k, $v) => "$k|$v",
+            fn($k, $v) => "$k|$v",
             array_keys($methodArr),
             $methodArr
         ));
@@ -218,7 +218,7 @@ class PayByLinkService implements PayByLinkServiceInterface
         if ($paymentMethod === 'MULTIBANCO') {
 
             $paymentAccounts = $this->config->payByLinkMethodAccounts();
-            $paymentMethod   = MethodCode::MULTIBANCO_STATIC;
+            $paymentMethod   = MethodCode::MULTIBANCO_OFFLINE;
 
             foreach ($paymentAccounts as $key => $value) {
                 if ($key === MethodCode::MULTIBANCO_DYNAMIC->value) {

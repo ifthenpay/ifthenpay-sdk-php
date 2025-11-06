@@ -123,7 +123,7 @@ class MultibancoOfflineService implements MultibancoOfflineServiceInterface
      */
     public function registerWebhook(string $webhookUrl, ?array $extraParams = null): string
     {
-        $webhookParams        = $extraParams ? array_merge($this->webhookService->getWebhookParams(MethodCode::MULTIBANCO_STATIC), $extraParams) : $this->webhookService->getWebhookParams(MethodCode::MULTIBANCO_STATIC);
+        $webhookParams        = $extraParams ? array_merge($this->webhookService->getWebhookParams(MethodCode::MULTIBANCO_OFFLINE), $extraParams) : $this->webhookService->getWebhookParams(MethodCode::MULTIBANCO_OFFLINE);
         $webhookUrlWithParams = StringTools::addQueryStringVars($webhookUrl, $webhookParams);
 
         $this->webhookService->registerWebhook($this->entity, $this->subEntity, $webhookUrlWithParams);

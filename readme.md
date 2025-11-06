@@ -117,7 +117,7 @@ return [
             'APPLE'   => 'ITP-000000',
             'PIX'     => 'ITP-000000',
         ],
-        'defaultMethod' => 'CCARD', // MBWAY, MULTIBANCO_DYNAMIC, MULTIBANCO_STATIC, PAYSHOP, CREDIT_CARD, COFIDIS, GOOGLE, APPLE, PIX
+        'defaultMethod' => 'CCARD', // MBWAY, MULTIBANCO_DYNAMIC, MULTIBANCO_OFFLINE, PAYSHOP, CREDIT_CARD, COFIDIS, GOOGLE, APPLE, PIX
         'daysToExpire'  => 3,
         'isOneTimePayment' => true,
         'successUrl'    => 'https://youraddress.com/sucess.php',
@@ -362,7 +362,7 @@ $webhookRequest = new WebhookRequest($_GET['val'], $_GET['oid'], $_GET['tid'], $
 
 // You would also get the payment record stored in your database (assume $dataArray)
 // and map it to a payment object
-$storedPayment = new Mbway($dataArrray['amount'], $dataArrray['orderId'], $dataArrray['transactionId'], $dataArrray['mobileNumber'], Status::tryFrom($dataArrray['status']), $dataArray['expireDate']);
+$storedPayment = new Mbway($dataArray['amount'], $dataArray['orderId'], $dataArray['transactionId'], $dataArray['mobileNumber'], Status::tryFrom($dataArray['status']), $dataArray['expireDate']);
 
 $ifthenpayGateway = new IfthenpayGateway($config);
 try {
@@ -382,7 +382,7 @@ Bear in mind that this expiration check serves only to help you update the payme
 
 ```php
 // assuming getting a payment record stored in your database ($dataArray) maps it to a payment object
-$storedPayment = new Mbway($dataArrray['amount'], $dataArrray['orderId'], $dataArrray['transactionId'], $dataArrray['mobileNumber'], Status::tryFrom($dataArrray['status']), $dataArray['expireDate']);
+$storedPayment = new Mbway($dataArray['amount'], $dataArray['orderId'], $dataArray['transactionId'], $dataArray['mobileNumber'], Status::tryFrom($dataArray['status']), $dataArray['expireDate']);
 
 $result = $ifthenpayGateway->mbway()->isExpired($payment);
 ```
@@ -396,7 +396,7 @@ Except for Pay By Link (which has its own method `isTransactionPaid()` ), each p
 ```php
 
 // assuming getting a payment record stored in your database ($dataArray) maps it to a payment object
-$storedPayment = new Mbway($dataArrray['amount'], $dataArrray['orderId'], $dataArrray['transactionId'], $dataArrray['mobileNumber'], Status::tryFrom($dataArrray['status']),
+$storedPayment = new Mbway($dataArray['amount'], $dataArray['orderId'], $dataArray['transactionId'], $dataArray['mobileNumber'], Status::tryFrom($dataArray['status']),
 
 $result = $ifthenpayGateway->mbway()->isPaid($storedPayment);
 ```
