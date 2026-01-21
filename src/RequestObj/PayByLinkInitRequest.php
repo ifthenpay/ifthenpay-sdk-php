@@ -113,7 +113,7 @@ class PayByLinkInitRequest
             "description"     => $this->description,
             "accounts"        => $this->methodAccounts,
             "selected_method" => $this->defaultMethod,
-            "expiredate"      => $this->daysToExpire !== null ? DateTools::getFutureDate($this->daysToExpire)->format('Ymd') : null,
+            "expiredate"      => $this->daysToExpire !== null ? DateTools::getFutureDate($this->daysToExpire + 1)->format('Ymd') : null,
             "successUrl"      => $this->successUrl,
             "errorUrl"        => $this->errorUrl,
             "cancelUrl"       => $this->cancelUrl,
